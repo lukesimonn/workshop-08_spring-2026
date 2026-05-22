@@ -177,6 +177,8 @@ Add a title describing the differences in (mean or median) plant mass between wa
 
 
 ```{r}
+#| fig-height: 6
+#| fig-width: 8
 
 ggplot(data = drought_exp_clean,
        aes(x = water_treatment,
@@ -210,6 +212,8 @@ Bonus: order the x-axis by decreasing mean plant mass.
 
 
 ```{r}
+#| fig-height: 6
+#| fig-width: 9
 
 # base layer: ggplot
 ggplot(data = drought_exp_clean,
@@ -323,6 +327,8 @@ model7 <- lm(
 
 ```{r}
 #| label: checking-diagnostics
+#| fig-height: 6
+#| fig-width: 6
 
 # displaying plots in 2x2 grid
 par(mfrow = c(2,2))
@@ -417,6 +423,8 @@ Create a clean, publication ready figure depicting predictions for the best mode
 
 ```{r}
 #| label: final-figure
+#| fig-height: 6
+#| fig-width: 10
 
 ggplot(data = drought_exp_clean,
        mapping = aes(x = water_treatment,
@@ -436,7 +444,7 @@ ggplot(data = drought_exp_clean,
     "Drought stressed" = ds_col,
     "Well watered" = ww_col
   )) +
-  theme(legend.postion = "none")
+  theme(legend.position = "none")
 ```
 
 
