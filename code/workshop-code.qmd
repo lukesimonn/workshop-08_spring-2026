@@ -142,12 +142,26 @@ slice_sample(drought_exp_clean, # display clean data frame
 
 ## What is the relationship between SLA and plant mass?  
 
-Make a scatterplot to visualize SLA (the predictor) on the x-axis, and total mass (the response) on the y-axis.  
+Make a scatterplot to visualize SLA (the predictor) on the x-axis, and total mass (the response) on the y-axis. 
 
 Label the axes with units where appropriate.  
 
 Add a title describing the relationship (e.g. as SLA increases, total mass ______). 
 
+```{r}
+
+# base layer: ggplot
+ggplot(data = drought_exp_clean,
+       aes(x = sla, # x-axis specific leaf area
+           y = total_g)) + # y-axis total plant mass
+  # first layer: scatterplot
+  geom_point() +
+  # labeling x and y-axes and adding title
+  labs(x = expression("Specific leaf area (cm"^2~"/g)"),
+       y = "Total leaf mass (g)",
+       title = "As SLA increases, total mass increases")
+
+```
 
 
 
@@ -162,6 +176,24 @@ Add a title describing the differences in (mean or median) plant mass between wa
 
 
 
+```{r}
+
+ggplot(data = drought_exp_clean,
+       aes(x = water_treatment,
+           y = total_g,
+           color = water_treatment)) +
+  geom_jitter(height = 0,
+              width = .2) +
+  scale_color_manual(values = c(
+    "Drought stressed" = ds_col,
+    "Well watered" = ww_col
+  ) )+
+  labs(x = "Treatment type",
+       y = "Total plant mass (g)",
+       title = "Well watered individuals tend to have higher mass")
+
+
+```
 
 
 
@@ -177,6 +209,40 @@ Add a title describing the differences in (mean or median) plant mass between sp
 Bonus: order the x-axis by decreasing mean plant mass.
 
 
+```{r}
+
+# base layer: ggplot
+ggplot(data = drought_exp_clean,
+       # x axis: species
+       # y axis: mass
+       # color by species
+       aes(x = reorder(species_name, -total_g, FUN = mean),
+           y = total_g,
+           color = species_name)) +
+  # jitter to represent indivs in each species
+  geom_jitter(height = 0,
+              width = .2) +
+  # wrapping x-axis text
+  scale_x_discrete(labels = label_wrap(10)) +
+  # labeling axes
+  labs(x = "Plant species",
+       y = "Total plant mass (g)",
+       title = "Species differ in plant mass") +
+  # coloring by species with custom colors
+  scale_color_manual(
+    values = c(
+      "Lotus scoparius" = lotsco_col,
+      "Penstemon centranthifolius" = pencen_col,
+      "Salvia leucophylla" = salleu_col,
+      "Encelia californica" = enccal_col,
+      "Stipa pulchra" = stipul_col,
+      "Eschscholzia californica" = esccal_col,
+      "Grindelia camporum" = gricam_col
+    )
+  ) +
+  # taking out legend
+  theme(legend.position = "none")
+```
 
 
 
