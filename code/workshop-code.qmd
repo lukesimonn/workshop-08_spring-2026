@@ -270,35 +270,69 @@ ggplot(data = drought_exp_clean,
 #| label: model fitting
 
 # model 0: null model
-
+model0 <- lm(
+  total_g ~ 1,
+  data = drought_exp_clean
+)
 
 # model 1: all predictors
-
+model1 <- lm(
+  total_g ~ sla + water_treatment + species_name,
+  data = drought_exp_clean
+)
 
 # model 2: SLA and water treatment
-
+model2 <- lm(
+  total_g ~ sla + water_treatment,
+  data = drought_exp_clean
+)
 
 # model 3: SLA and species
-
+model3 <- lm(
+  total_g ~ sla + species_name,
+  data = drought_exp_clean
+)
 
 # model 4: water treatment and species
-
+model4 <- lm(
+  total_g ~ water_treatment + species_name,
+  data = drought_exp_clean
+)
 
 # model 5: SLA
-
+model5 <- lm(
+  total_g ~ sla,
+  data = drought_exp_clean
+)
 
 # model 6: water treatment
-
+model6 <- lm(
+  total_g ~ water_treatment,
+  data = drought_exp_clean
+)
 
 # model 7: species
-
+model7 <- lm(
+  total_g ~ species_name,
+  data = drought_exp_clean
+)
 ```
 
 ## Model diagnostics
 
 
+```{r}
+#| label: checking-diagnostics
 
+# displaying plots in 2x2 grid
+par(mfrow = c(2,2))
+# plotting diagnostics
+plot(model4)
+```
 
+- residuals are normally distributed (QQ)
+- residuals are homoscedastic (Residuals vs fitted/scale-location)
+- no outliers influencing model coeff estimates (leverage)
 
 
 ## Model selection
@@ -307,12 +341,32 @@ Insert code to use the `AICc()` function to calculate the AIC for each model.
 
 Arrange by decreasing AIC.
 
+```{r}
+#| label: model-selection
+
+AICc(
+  model0,
+  model1,
+  model2,
+  model3,
+  model4,
+  model5,
+  model6,
+  model7
+) |> 
+  arrange(AICc)
+```
 
 
 
 Insert code to display the summary for the best model. 
 
 
+```{r}
+#| label: model-summary
+
+summary(model4)
+```
 
 
 
@@ -320,15 +374,21 @@ Insert code to display the summary for the best model.
 
 **What is the best model?**
 
-[insert your response here]
+The best model includes water treatment and species as predictors
 
 **How much variation in the response (total mass, in grams) does this model explain?**
 
-[insert your response here]
+72.6% of the variation of plant mass is explained by this model.
 
 **How do we interpret the effects of the predictors on the response variable (again, total mass in grams)?**
 
-[insert your response here]
+- species influences plant mass
+- treatment influences plant mass
+
+- `(Intercept)`: The intercept is the model prediction for plant mass for Lotus scoparius in the drought stressed treatment.
+- `water_treatmentWell watered`: model prediction for the difference in Lotus scoparius mass between well watered and drought stressed treatments.
+- `species_namePenstemon centranthifolius`: difference between Penstemon mass in the well watered treatment and Lotus scoparius mass in the well watered treatment
+- `species_nameEschscholzia californica`: difference between Escholzia californica mass in the well watered treatment and Lotus scoparius mass in the well watered treatment
 
 # 4. Model predictions
 
